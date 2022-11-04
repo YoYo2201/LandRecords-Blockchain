@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: white;
+}
+
+.App {
+  text-align: center;
+  height: 150vh;
+  font-size: 20px;
+  font-weight: 100;
+  word-spacing: 1px;
+  line-height: 1.45em;
+  font-family: "Ubuntu", "Sharp Sans No1", Sans-serif;
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(32, 32, 31, 0.98),
+      rgba(11, 17, 20, 0.98)
+    ),
+    url(./img/background4.jpeg);
+  background-size: cover;
+  background-position: top;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.main-page {
+  padding-top: 20px;
+}
+
+.home-nav {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.sign-up {
+  padding-top: 50px;
+  font-size: 40px;
+  font-weight: 200;
+}
+
+.signup-form {
+  padding-top: 60px;
+  width: 31%;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 400px;
+}
+
+.content {
+  padding-right: 1.2em;
+}
+
+.signin-onUp {
+  font-size: 20px;
+  font-weight: 100;
+}
+
+.home-page {
+  padding-top: 50px;
+  padding-left: 40px;
+  padding-right: 30px;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.5em;
+}
+
+.user-account {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+  padding-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 400px;
+}
+
+.user-card {
+  margin-top: 30px;
+}
+
+#show-password{
+  border: none;
+  background: none;
+  position: absolute;
+}
+
+i.showPassword{
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.labelPassword {
+  float: right;
+}
+
+.verify-forgot{
+  color: red;
+  border: none;
+  background: none;
+  position: relative;
+  top: 6px;
+  padding-left: 3px;
+}
+
+i.verify::after{
+  position: absolute;
+  top: 6px;
+  content: '\e5ca';
+  color: chartreuse;
+}
+
+i.close::after{
+  position: absolute;
+  top: 6px;
+  content: '\e5cd';
+  color: red;
+}
+
+.Searching {
+  font-size: 18px;
+}
+
+#panContain {
+  display: flex;
+}

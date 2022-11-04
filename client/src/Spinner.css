@@ -1,0 +1,16 @@
+#loading{
+    display: inline-block;
+}
+
+.spin{
+    position: absolute;
+    top: 40%;
+    z-index: 36;
+    display: inline-block;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#SpinnerId{
+    height: 340px;
+}
