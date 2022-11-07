@@ -2,32 +2,33 @@ import React, { Component } from 'react';
 import { Grid, Image } from 'semantic-ui-react';
 import img from '../img/background7.jpeg';
 import '../App.css';
-
+import Polygon from '../img/Polygon.png';
+import Ethereum from '../img/Ethereum.png';
+import Sale from '../img/Sale.png';
+import MyHome from '../img/Home.jpg';
 class Home extends Component {
+
+    componentDidMount = () => {
+        this.props.setStateData("HomePageActive", true);
+    }
+
     render() {
         return (
-            <div className='home-page'>
-                <Grid stackable columns={3} textAlign='left'>
-                    <Grid.Row>
-                        <Grid.Column width={8}>
-                            This is a demonstration of a Blockchain based authentication
-                            where login information are not stored in a database, but the
-                            hash resulting from login data is stored on a smart contract.
-                            To authenticate users need an athereum address, a username, a
-                            password and a four digit code. The user must be connected to
-                            the Blockchain before authentication since the web3 sign method
-                            is used to generate a cryptographic signature necessary for
-                            the generation of the user's login data hash.
-                        </Grid.Column>
-                        <Grid.Column width={1}>
-
-                        </Grid.Column>
-                        <Grid.Column width={7}>
-                            <Image src={img} alt='image' />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+            <>
+            <div className='homePage'>
+                <img src={MyHome} style={{borderRadius: "20px"}}></img>
+                <div id='mainBox'>
+                    <div id='descBox'>
+                        <p id='desc1'>"Connecting Homes"</p>
+                        <button type="button" className=" Searching btn btn-outline-success my-2 my-sm-0" id="SellButton" onClick={() => this.props.changeRoute('/about', false)}><p id="connectText">About</p></button>
+                    </div>
+                </div>
+                <img src={Sale} className='imageBox'></img>
             </div>
+            {/* <div className='polygon'>
+                    <img src={Polygon} className='image1'></img>
+            </div> */}
+            </>
         );
     }
 }

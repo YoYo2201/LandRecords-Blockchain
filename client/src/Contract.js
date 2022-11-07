@@ -2,7 +2,7 @@ import Authentication from './artifacts/contracts/Authentication.sol/Authenticat
 // require("dotenv").config({ path: './.env' });
 
 const Contract = async (web3) => {
-    const NEXT_PUBLIC_ADDRESS = '0x4e14B77748c3e880447e879d3485Eb184d32080B'
+    const NEXT_PUBLIC_ADDRESS = '0xf6bF36Ea20DE84467Eb31fBd0aa5901496f0187D'
 
     return new web3.eth.Contract(
         Authentication.abi,

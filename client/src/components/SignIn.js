@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Card, Message } from 'semantic-ui-react';
 import AuthValidation from '../utils/AuthValidation';
 import "../App.css";
+import Property from '../img/Property.jpg';
 
 class SignIn extends Component {
     state = {
@@ -16,6 +17,7 @@ class SignIn extends Component {
 
     componentDidMount = () => {
         this.props.initialize();
+        this.props.setStateData("HomePageActive", false);
     }
 
     onSignIn = async () => {
@@ -32,20 +34,32 @@ class SignIn extends Component {
             //===
             if (password.length < 8) {
                 this.setState({
-                    alertMessage: "at least 8 characters for password",
+                    alertMessage: "Password must be of at least 8 characters",
                     status: 'failed',
                     password: '',
                     digicode: '',
                 });
+                setTimeout(() => {
+                    this.setState({
+                      alertMessage: null,
+                      status: ''
+                    })
+                  }, 1800);
                 return;
             } else {
 
             } if (digicode.length !== 6) {
                 this.setState({
-                    alertMessage: "6 digit required for digicode",
+                    alertMessage: "DigiCode must be of 6 digits",
                     status: 'failed',
                     digicode: ''
                 });
+                setTimeout(() => {
+                    this.setState({
+                      alertMessage: null,
+                      status: ''
+                    })
+                  }, 1800);
                 return
             } else {
                 this.props.setStateData('load', true);
@@ -61,6 +75,12 @@ class SignIn extends Component {
                         password: '',
                         digicode: '',
                     });
+                    setTimeout(() => {
+                        this.setState({
+                          alertMessage: null,
+                          status: ''
+                        })
+                      }, 1800);
                     this.props.setStateData('load', false);
                     this.props.setStateData('disable', false);
                     this.props.makeBlur(0);
@@ -83,6 +103,12 @@ class SignIn extends Component {
                             password: '',
                             digicode: '',
                         });
+                        setTimeout(() => {
+                            this.setState({
+                              alertMessage: null,
+                              status: ''
+                            })
+                          }, 1800);
                         this.props.setStateData('load', false);
                         this.props.makeBlur(0);
                         this.props.setStateData('disable', false);
@@ -96,6 +122,12 @@ class SignIn extends Component {
                             alertMessage: "Sign In successful",
                             loggedIn: true
                         });
+                        setTimeout(() => {
+                            this.setState({
+                              alertMessage: null,
+                              status: ''
+                            })
+                          }, 1800);
 
                         this.props.setStateData('load', false);
                         this.props.makeBlur(0);
@@ -104,27 +136,27 @@ class SignIn extends Component {
                             this.state.loggedIn,
                             usernameToSend
                         );
-
-                        this.props.navigator('/user-account', true);
+                        this.setState({
+                            username: '',
+                            password: '',
+                            digicode: ''
+                        })
+                        this.props.setNavBarWidth();
+                        this.props.navigator('/sell', true);
                         return;
                     }
                 }
             }
         }
-
-
-        this.setState({
-            username: '',
-            password: '',
-            digicode: ''
-        })
     }
 }
     render() {
         return (
             <div className="sign-up">
-                Sign in to your account
+                <div>
+                <img src={Property} id='property'></img></div>
                 <div className='signup-form'>
+                <p style={{paddingBottom: '2px'}}>Sign in to your account</p>
                     <Card fluid centered>
                         <Card.Content>
                             <Form size='large'>
@@ -168,6 +200,7 @@ class SignIn extends Component {
                                         id='password'
                                         autoComplete="current-password"
                                         onChange={e => this.setState({ password: e.target.value })}
+                                        minLength={8}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -189,6 +222,7 @@ class SignIn extends Component {
                                         id='code'
                                         autoComplete="digicode"
                                         onChange={e => this.setState({ digicode: e.target.value })}
+                                        length={8}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -200,13 +234,9 @@ class SignIn extends Component {
                             </Form>
                         </Card.Content>
                     </Card>
-                    {
-                        this.props.signedUp ?
-                            console.log() :
                             <div className="signin-onUp">
                                 Don't have an account? <Link to='/sign-up'>Sign up</Link>
                             </div>
-                    }
                 </div>
             </div>
         );

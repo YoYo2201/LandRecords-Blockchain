@@ -4,6 +4,7 @@ import { Form, Button, Card, Message } from 'semantic-ui-react';
 import AuthenticationHash from '../utils/AuthenticationHash';
 import "../App.css";
 import SpinnerVerify from '../SpinnerVerify';
+import Property from '../img/Property.jpg';
 
 class SignUp extends Component {
     state = {
@@ -17,7 +18,8 @@ class SignUp extends Component {
         verify: false,
         spinnerActive: false,
         disable: true,
-        verifyClass: ''
+        verifyClass: '',
+        email: ''
     }
 
     componentDidMount = () => {
@@ -26,6 +28,7 @@ class SignUp extends Component {
         doc[0].style.paddingRight = "1.2em";
         let pan = document.getElementById("panStyle").style;
         pan.width = "109%";
+        this.props.setStateData("HomePageActive", false);
     }
 
     Verify = async () => {
@@ -47,7 +50,9 @@ class SignUp extends Component {
                 })
               }, 1800);
             this.setState({spinnerActive: false})
-            this.setState({verify: true})
+            this.setState({verify: false})
+            this.props.setStateData('disable', true);
+            this.setState({disable: true});
         }
         else {
             let pan = document.getElementById("panStyle").style;
@@ -64,8 +69,8 @@ class SignUp extends Component {
               }, 1800);
             this.setState({spinnerActive: false})
             this.setState({verify: true})
+            this.setState({disable: false});
         }
-        this.setState({disable: false});
     }
     else {
         this.setState({
@@ -97,11 +102,12 @@ class SignUp extends Component {
             let password = this.state.password.trim();
             let digicode = this.state.digicode.trim();
             let pan = this.state.pan.trim();
+            let email = this.state.email.trim();
 
             //===
             if (password.length < 8) {
                 this.setState({
-                    alertMessage: "at least 8 characters for password",
+                    alertMessage: "Password must be of at least 8 characters",
                     status: 'failed',
                     password: '',
                     digicode: '',
@@ -117,7 +123,7 @@ class SignUp extends Component {
 
             } if (digicode.length !== 6) {
                 this.setState({
-                    alertMessage: "6 digit required for digicode",
+                    alertMessage: "DigiCode must be of 6 digits",
                     status: 'failed',
                     digicode: ''
                 });
@@ -154,7 +160,7 @@ class SignUp extends Component {
                     return;
                 } else {
                     let hash = await AuthenticationHash(username, this.props.account, password, digicode, this.props.web3);
-                    await this.props.contract.methods.register(hash, pan).send({ from: this.props.account });
+                    await this.props.contract.methods.register(hash, pan, email).send({ from: this.props.account });
 
                     this.setState({
                         username: '',
@@ -176,6 +182,7 @@ class SignUp extends Component {
                     this.props.setStateData('disable', false);
                     this.Edit();
                     this.props.accountCreated(this.state.signedUp);
+                    this.props.navigator('/sign-in', true);
                     return;
                 }
             }
@@ -186,8 +193,10 @@ class SignUp extends Component {
     render() {
         return (
             <div className="sign-up">
-                Create an account
+                <div>
+                <img src={Property} id='property'></img></div>
                 <div className='signup-form'>
+                <p style={{paddingBottom: '2px'}}>Create an account</p>
                     <Card fluid centered>
                         <Card.Content>
                             <Form size='large'>
@@ -234,6 +243,17 @@ class SignUp extends Component {
                                     />
                                 </Form.Field>
                                 <Form.Field>
+                                    <input
+                                        required
+                                        type='email'
+                                        placeholder='Enter Email'
+                                        value={this.state.email}
+                                        autoComplete="off"
+                                        onChange={e => this.setState({ email: e.target.value })}
+                                        disabled={this.state.disable}
+                                    />
+                                </Form.Field>
+                                <Form.Field>
                                 <label for="password" className='labelPassword'>
                     <i className="password material-icons"></i>
                     <button
@@ -254,6 +274,7 @@ class SignUp extends Component {
                                         autoComplete="new-password"
                                         onChange={e => this.setState({ password: e.target.value })}
                                         disabled={this.state.disable}
+                                        minLength={8}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -277,6 +298,7 @@ class SignUp extends Component {
                                         autoComplete="digicode"
                                         onChange={e => this.setState({ digicode: e.target.value })}
                                         disabled={this.state.disable}
+                                        minLength={8}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -291,6 +313,7 @@ class SignUp extends Component {
                         Already have an account? <Link to='/sign-in'>Sign in</Link>
                     </div>
                 </div>
+                {/* <img src={Property} id='property'></img> */}
             </div>
         );
     }

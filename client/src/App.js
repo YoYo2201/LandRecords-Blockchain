@@ -9,10 +9,17 @@ import Home from './components/Home';
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn"
 import SignOut from "./components/SignOut";
-import UserAccount from './components/UserAccount';
 import "./App.css";
 import Spinner from './Spinner';
 import Alert from './Alert';
+import Sell from './components/Sell';
+import Properties from "./components/Properties";
+import AdminSignIn from "./components/AdminSignIn";
+import AdminSignUp from "./components/AdminSignUp";
+import AllotProperty from "./components/AllotProperty";
+import Sendotp from "./components/sendOTP";
+import Receiveotp from "./components/receiveOTP";
+import SellContinue from "./components/SellContinue";
 
 class App extends Component {
   state = {
@@ -30,7 +37,12 @@ class App extends Component {
     disable: false,
     alert: null,
     connectStatus: 'Connect',
-    disableButton: false
+    disableButton: false,
+    govLoggedIn: false,
+    govUsername: '',
+    HomePageActive: true,
+    index: null,
+    property: null
   };
 
   navigator = (position, replace) => {  
@@ -61,6 +73,21 @@ class App extends Component {
         disable: data,
       });
     }
+    else if(element === 'HomePageActive') {
+      this.setState({
+        HomePageActive: data,
+      }, this.titleColorChange);
+    }
+    else if(element === 'index') {
+      this.setState({
+        index: data,
+      });
+    }
+    else if(element === 'property') {
+      this.setState({
+        property: data,
+      });
+    }
   }
 
   passwordHandle = (id, flag) => {
@@ -83,6 +110,9 @@ class App extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name, color: 'teal' })
 
   ConnectToWallet = async () => {
+    if(this.state.connectStatus === 'Connected')
+      this.handleAlert("danger", "Already Connected!");
+    else {
     try {
       const web3 = await web3Connection();
       const contract = await Contract(web3);
@@ -90,16 +120,17 @@ class App extends Component {
 
       this.setState({ web3: web3, contract: contract, account: accounts[0] }, this.start);
       this.setState({connectStatus: 'Connected', disableButton: true});
+      await this.getAccount();
     } catch (error) {
       this.handleAlert("danger", "Unable to Connect!!!");
     }
-
-    await this.getAccount();
+  }
   };
 
   start = async () => {
     await this.getAccount();
     const { web3, contract, account } = this.state;
+    console.log(this.state.contract)
   };
 
   getAccount = async () => {
@@ -127,8 +158,25 @@ class App extends Component {
     this.setState({ loggedIn: loggedIn, username: username });
   }
 
+  govSignedIn = async (loggedIn, username) => {
+    this.setState({ govLoggedIn: loggedIn, govUsername: username });
+  }
+
+  titleColorChange = () => {
+    let text = document.getElementById("title").style;
+    if(this.state.HomePageActive === true)
+      text.backgroundColor = "white";
+    else
+      text.backgroundColor = "black";
+  }
+
   loggedOut = async (loggedIn) => {
-    this.setState({ loggedIn: loggedIn });
+    this.setState({ loggedIn: loggedIn }, this.setNavBarWidth);
+    this.navigator('/', true);
+  }
+
+  govLoggedOut = async (loggedIn) => {
+    this.setState({ govLoggedIn: loggedIn }, this.setNavBarWidth);
     this.navigator('/', true);
   }
 
@@ -176,6 +224,27 @@ class App extends Component {
       bg.filter = '';
   }
 
+  changeRoute = (route, replace) => {
+    this.navigator(route, replace);
+  }
+
+  componentDidMount = () => {
+    let nav = document.getElementsByClassName("navBar");
+    if(this.state.loggedIn)
+      nav[0].style.width = "900px";
+    else
+      nav[0].style.width = "600px";
+    this.titleColorChange();
+  }
+
+  setNavBarWidth = () => {
+    let nav = document.getElementsByClassName("navBar");
+    if(this.state.loggedIn)
+      nav[0].style.width = "500px";
+    else
+      nav[0].style.width = "600px";
+  }
+
   render() {
     const { activeItem, color } = this.state;
     return (
@@ -183,92 +252,99 @@ class App extends Component {
         {this.state.load && <Spinner/>}
         {this.state.alert !== null ? <Alert alert={this.state.alert}/> : undefined}
         <div className="main-page" id="Background">
-            <div className="home-nav">
-              <Menu stackable inverted secondary size='large'>
-                <Menu.Item
-                  name='home'
-                  color={color}
-                  active={activeItem === 'home'}
-                  onClick={this.handleItemClick}
-                  as={Link}
-                  to='/'
-                />
-                <Menu.Item
-                  name='help'
-                  color={color}
-                  active={activeItem === 'help'}
-                  onClick={this.handleItemClick}
-                  as={Link}
-                  to='/help'
-                />
-                {
-                  this.state.loggedIn ?
-                    <Menu.Item
-                      position='right'
-                      name='user account'
-                      color={color}
-                      active={activeItem === 'user account'}
-                      onClick={this.handleItemClick}
-                      as={Link}
-                      to='/user-account'
-                    />
-                    :
-                    console.log('')
-                }
-                {
-                  !this.state.loggedIn ?
-                    <Menu.Item
-                      position='right'
-                      name='Login'
-                      color={color}
-                      active={activeItem === 'sign in'}
-                      onClick={this.handleItemClick}
-                      as={Link}
-                      to='/sign-in'
-                    />
-                    :
-                    <Menu.Item
-                      name='sign out'
-                      color='red'
-                      active={activeItem === 'sign out'}
-                      onClick={this.handleItemClick}
-                      as={Link}
-                      to='/sign-out'
-                    />
-                }
-                <button class=" Searching btn btn-outline-success my-2 my-sm-0" type="button" onClick={this.ConnectToWallet} disabled={this.state.disableButton}>{this.state.connectStatus}</button>
-              </Menu>
-            </div>
-            <Divider inverted />
-
+          <p id="title">LandRecords</p>
+          <div className="navBar"> 
+            <button type="button" className="navBarbutton" onClick={() => this.changeRoute('/', true)}>Home</button>
+            {this.state.loggedIn ?<>
+            <button type="button" className="navBarbutton" onClick={() => this.changeRoute('/sell', false)}>Sell</button>
+            <button type="button" className="navBarbutton" onClick={() => this.changeRoute('/sign-out', false)}>Sign Out</button></> : this.state.govLoggedIn ? <>
+            <button type="button" className="navBarbutton" onClick={() => this.changeRoute('/admin/sign-out', false)}>Sign Out</button></> : <><button type="button" className="navBarbutton" onClick={() => this.changeRoute('/sign-in', false)}>User Login</button><button type="button" className="navBarbutton" onClick={() => this.changeRoute('/admin/sign-in', false)}>Admin Login</button></>}
+            <button type="button" className=" Searching btn btn-outline-success my-2 my-sm-0" id="ConnectButton" onClick={this.ConnectToWallet}><p id="connectText">{this.state.connectStatus}</p></button>
+          </div>
             <Routes>
-              <Route exact path='/' element={<Home />}></Route>
-              <Route path='/help' element={<>Help page</>}>
-              </Route>
-              {/* { */}
-                {/* this.state.loggedIn ? */}
-                  <Route exact path='/user-account' element={<UserAccount
-                    account={this.state.account}
-                    username={this.state.username}
-                  />}>
-                    
-                  </Route>
-                  {/* // :
-                  // <Route path='/user-account' element={<>You have been logged out</>}>
-                  // </Route>
-              // } */}
-              {
+              <Route exact path='/' element={<Home changeRoute={this.changeRoute} state={this.state} setStateData={this.setStateData}/>}></Route>
+              
+              <Route path='/sell' element={<Sell changeRoute={this.changeRoute}
+              web3={this.state.web3}
+              contract={this.state.contract}
+              account={this.state.account}
+              signedUp={this.state.signedUp}
+              userSignedIn={this.userSignedIn}
+              passwordHandle={this.passwordHandle}
+              state={this.state}
+              navigator={this.navigator}
+              initialize={this.initialize}
+              setStateData={this.setStateData}
+              makeBlur={this.makeBlur}
+              alertFunc={this.handleAlert}
+              setNavBarWidth={this.setNavBarWidth}/>}></Route>
+
+            <Route path='/sell/1' element={<SellContinue
+              web3={this.state.web3}
+              contract={this.state.contract}
+              account={this.state.account}
+              signedUp={this.state.signedUp}
+              userSignedIn={this.userSignedIn}
+              passwordHandle={this.passwordHandle}
+              state={this.state}
+              navigator={this.navigator}
+              initialize={this.initialize}
+              setStateData={this.setStateData}
+              makeBlur={this.makeBlur}
+              alertFunc={this.handleAlert}
+              setNavBarWidth={this.setNavBarWidth}/>}></Route>
+
+          <Route path='/api/sendOTP' element={<Sendotp changeRoute={this.changeRoute}
+              web3={this.state.web3}
+              contract={this.state.contract}
+              account={this.state.account}
+              signedUp={this.state.signedUp}
+              userSignedIn={this.userSignedIn}
+              passwordHandle={this.passwordHandle}
+              state={this.state}
+              navigator={this.navigator}
+              initialize={this.initialize}
+              setStateData={this.setStateData}
+              makeBlur={this.makeBlur}
+              alertFunc={this.handleAlert}
+              setNavBarWidth={this.setNavBarWidth}/>}></Route>
+
+          <Route path='/api/receiveOTP' element={<Receiveotp changeRoute={this.changeRoute}
+              web3={this.state.web3}
+              contract={this.state.contract}
+              account={this.state.account}
+              signedUp={this.state.signedUp}
+              userSignedIn={this.userSignedIn}
+              passwordHandle={this.passwordHandle}
+              state={this.state}
+              navigator={this.navigator}
+              initialize={this.initialize}
+              setStateData={this.setStateData}
+              makeBlur={this.makeBlur}
+              alertFunc={this.handleAlert}
+              setNavBarWidth={this.setNavBarWidth}/>}></Route>
+
+            <Route exact path='/api/properties' element={<Properties
+              web3={this.state.web3}
+              contract={this.state.contract}
+              account={this.state.account}
+              signedUp={this.state.signedUp}
+              userSignedIn={this.userSignedIn}
+              state={this.state}
+              navigator={this.navigator}
+              initialize={this.initialize}
+              setStateData={this.setStateData}
+              makeBlur={this.makeBlur}
+              alertFunc={this.handleAlert}
+              setNavBarWidth={this.setNavBarWidth}/>}></Route>
+
                 <Route path='/sign-in' element={
-                  // this.state.loggedIn ?
-                  //   this.navigator('/user-account', true)
-                  //   :
                     <SignIn
                       web3={this.state.web3}
                       contract={this.state.contract}
                       account={this.state.account}
                       signedUp={this.state.signedUp}
                       userSignedIn={this.userSignedIn}
-                      ConnectToWallet={this.ConnectToWallet}
                       navigator={this.navigator}
                       passwordHandle={this.passwordHandle}
                       state={this.state}
@@ -276,37 +352,100 @@ class App extends Component {
                       setStateData={this.setStateData}
                       makeBlur={this.makeBlur}
                       alertFunc={this.handleAlert}
+                      setNavBarWidth={this.setNavBarWidth}
                     />
-                }>
-                </Route>
-              }
+                }></Route>
 
-              {
-                this.state.loggedIn ?
-                  <Route path='/sign-out' element={<><SignOut
+                  <Route path='/api/allot/property' element={
+                    <AllotProperty
+                      web3={this.state.web3}
+                      contract={this.state.contract}
+                      account={this.state.account}
+                      signedUp={this.state.signedUp}
+                      userSignedIn={this.userSignedIn}
+                      navigator={this.navigator}
+                      passwordHandle={this.passwordHandle}
+                      state={this.state}
+                      initialize={this.initialize}
+                      setStateData={this.setStateData}
+                      makeBlur={this.makeBlur}
+                      alertFunc={this.handleAlert}
+                      setNavBarWidth={this.setNavBarWidth}
+                    />
+                }></Route>
+                  
+                  <Route path='/sign-out' element={<SignOut
                     loggedOut={this.loggedOut}
-                  />You've been logged out
-                  <br></br>
-                  Thank you</>}>
-                    
-                  </Route>
-                  :
+                    setNavBarWidth={this.setNavBarWidth}
+                  />}></Route>
+                  
                   <Route path='/sign-up' element={<SignUp
                     web3={this.state.web3}
                     contract={this.state.contract}
                     account={this.state.account}
                     accountCreated={this.accountCreated}
-                    ConnectToWallet={this.ConnectToWallet}
                     passwordHandle={this.passwordHandle}
                     state={this.state}
                     initialize={this.initialize}
                     setStateData={this.setStateData}
                     makeBlur={this.makeBlur}
+                    navigator={this.navigator}
                     alertFunc={this.handleAlert}
-                  />}>
-                    
-                  </Route>
-              }
+                    setNavBarWidth={this.setNavBarWidth}
+                  />}></Route>
+
+            {/* <Route path='/admin/transaction' element={<Transaction changeRoute={this.changeRoute}
+              web3={this.state.web3}
+              contract={this.state.contract}
+              account={this.state.account}
+              signedUp={this.state.signedUp}
+              userSignedIn={this.userSignedIn}
+              ConnectToWallet={this.ConnectToWallet}
+              passwordHandle={this.passwordHandle}
+              state={this.state}
+              initialize={this.initialize}
+              setStateData={this.setStateData}
+              makeBlur={this.makeBlur}
+              alertFunc={this.handleAlert}
+              setNavBarWidth={this.setNavBarWidth}/>}></Route> */}
+
+                  <Route path='/admin/sign-in' element={
+                    <AdminSignIn
+                      web3={this.state.web3}
+                      contract={this.state.contract}
+                      account={this.state.account}
+                      signedUp={this.state.signedUp}
+                      govSignedIn={this.govSignedIn}
+                      navigator={this.navigator}
+                      passwordHandle={this.passwordHandle}
+                      state={this.state}
+                      initialize={this.initialize}
+                      setStateData={this.setStateData}
+                      makeBlur={this.makeBlur}
+                      alertFunc={this.handleAlert}
+                      setNavBarWidth={this.setNavBarWidth}
+                    />
+                }></Route>
+                  
+                  <Route path='/admin/sign-out' element={<SignOut
+                    loggedOut={this.govLoggedOut}
+                    setNavBarWidth={this.setNavBarWidth}
+                  />}></Route>
+                  
+                  <Route path='/admin/sign-up' element={<AdminSignUp
+                    web3={this.state.web3}
+                    contract={this.state.contract}
+                    account={this.state.account}
+                    accountCreated={this.accountCreated}
+                    passwordHandle={this.passwordHandle}
+                    state={this.state}
+                    initialize={this.initialize}
+                    setStateData={this.setStateData}
+                    makeBlur={this.makeBlur}
+                    navigator={this.navigator}
+                    alertFunc={this.handleAlert}
+                    setNavBarWidth={this.setNavBarWidth}
+                  />}></Route>
             </Routes>
         </div>
       </div>

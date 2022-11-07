@@ -9,20 +9,16 @@ body {
 
 .App {
   text-align: center;
-  height: 150vh;
+  height: 100vh;
   font-size: 20px;
   font-weight: 100;
   word-spacing: 1px;
   line-height: 1.45em;
   font-family: "Ubuntu", "Sharp Sans No1", Sans-serif;
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(32, 32, 31, 0.98),
-      rgba(11, 17, 20, 0.98)
-    ),
-    url(./img/background4.jpeg);
-  background-size: cover;
+  background: linear-gradient(113.49deg, #984D38 -30.3%, #181E41 58.12%);
   background-position: top;
+  overflow-y: hidden;
+  position: relative;
 }
 
 .App-logo {
@@ -45,7 +41,7 @@ body {
 }
 
 .main-page {
-  padding-top: 20px;
+  /* padding-top: 20px; */
 }
 
 .home-nav {
@@ -54,13 +50,27 @@ body {
 }
 
 .sign-up {
-  padding-top: 50px;
+  padding-top: 0px;
   font-size: 40px;
-  font-weight: 200;
+  font-weight: 500;
+  /* position: relative;
+  top: 80px; */
+  display: flex;
+}
+
+.ui.fluid.card {
+  width: 94%;
+  max-width: 9999px;
+}
+
+#property {
+  width: 1100px;
+  height: 100vh;
+  border-radius: 20px;
 }
 
 .signup-form {
-  padding-top: 60px;
+  padding-top: 160px;
   width: 31%;
   margin-left: auto;
   margin-right: auto;
@@ -73,7 +83,7 @@ body {
 
 .signin-onUp {
   font-size: 20px;
-  font-weight: 100;
+  font-weight: 400;
 }
 
 .home-page {
@@ -144,4 +154,384 @@ i.close::after{
 
 #panContain {
   display: flex;
+}
+
+
+#title {
+  display: inline;
+  position: absolute;
+width: 274px;
+height: 38px;
+left: 56px;
+top: 40px;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 38px;
+  /* background: linear-gradient(214.02deg, #B75CFF 6.04%, #671AE4 92.95%); */
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+background-color: black;
+/* text-fill-color: transparent; */
+}
+
+.navBar {
+  display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px;
+gap: 40px;
+
+position: absolute;
+height: 70px;
+float: right;
+right: 42px;
+top: 10px;
+}
+
+.navBarbutton {
+height: 30px;
+background: none;
+border: none;
+
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 900;
+font-size: 20px;
+line-height: 30px;
+
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+#ConnectButton {
+  display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 20px;
+gap: 10px;
+
+width: 171px;
+height: 50px;
+
+/* pp2 purple */
+background: linear-gradient(214.02deg, #B75CFF 6.04%, #671AE4 92.95%);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+border-color: blueviolet;
+}
+
+#connectText {
+  font-family: 'Poppins';
+font-style: normal;
+font-weight: 900;
+font-size: 20px;
+line-height: 30px;
+
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+.homePage {
+  position: absolute;
+width: 1400px;
+height: 600px;
+left: 80px;
+top: 180px;
+/* background-color: black; */
+display: flex;
+}
+
+#mainBox {
+  position: relative;
+width: 490px;
+height: 457px;
+left: 122px;
+top: 140px;
+/* background-color: green; */
+}
+
+#desc1 {
+  position: relative;
+width: 471px;
+height: 180px;
+left: 0px;
+top: 40px;
+
+font-family: 'Playball';
+font-weight: 700;
+font-size: 70px;
+line-height: 120%;
+
+/* or 60px */
+
+color: #FFFFFF;
+}
+
+#descBox {
+  position: relative;
+width: 472px;
+height: 342px;
+left: 0px;
+top: 0px;
+}
+
+#desc2 {
+  position: relative;
+width: 298px;
+height: 50px;
+left: 122px;
+top: 494px;
+}
+
+#SellButton {
+padding: 10px 20px;
+gap: 10px;
+position: relative;
+left: -17px;
+
+width: 171px;
+height: 50px;
+
+/* pp2 purple */
+background: linear-gradient(214.02deg, #B75CFF 6.04%, #671AE4 92.95%);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+border-color: blueviolet;
+}
+
+.imageBox {
+  position: relative;
+width: 550px;
+height: 600px;
+left: 205px;
+top: 0px;
+/* background: url('./img/background3.jpeg');
+background-size: contain;
+background-repeat: round; */
+}
+
+.polygon {
+  position: absolute;
+  width: 100%;
+  height: 330px;
+  top: 795px;
+  display: block;
+  margin: auto;
+  left: 20px;
+}
+
+.image1 {
+  position: relative;
+width: 299.51px;
+height: 249px;
+top: 0px;
+}
+
+.image2 {
+  position: relative;
+width: 200.51px;
+height: 155px;
+left: 368px;
+top: 40px;
+}
+
+.form-group {
+  position: relative;
+top: 113px;
+width: 508px;
+display: block;
+margin: auto;
+padding: 1em;
+}
+
+#panInput {
+  height: 47px;
+  font-size: 19px;
+  margin-bottom: 15px;
+}
+
+#DetailsButton {
+  height: 42px;
+  font-size: 18px;
+}
+
+.box{
+  position: relative;
+width: 342px;
+height: 411px;
+background: linear-gradient(189.25deg, #A394FF 6.26%, rgba(255, 255, 255, 0.94) 62.54%);
+box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.15);
+border-radius: 35px;
+margin: 4em;
+}
+
+.Cards {
+    width: 1508px;
+    height: 815px;
+    position: relative;
+    display: flex;
+    margin: auto;
+    top: 146px;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.CardGov {
+  width: 1508px;
+  height: 422px;
+  position: relative;
+  display: flex;
+  margin: auto;
+  top: 146px;
+}
+
+.contentBox {
+  width: 342px;
+position: relative;
+top: 24px;
+overflow: scroll;
+  overflow-x: scroll;
+height: 169px;
+color: black;
+font-weight: 341;
+overflow-x: hidden;
+overflow-wrap: anywhere;
+}
+
+.contentBoxGov {
+  width: 342px;
+position: relative;
+top: 201px;
+overflow: scroll;
+height: 155px;
+color: black;
+font-weight: 341;
+overflow-x: hidden;
+overflow-wrap: anywhere;
+}
+
+.titleContent {
+  position: relative;
+  top: 77px;
+  color: black;
+  font-weight: 633;
+  font-size: 22px;
+}
+
+.titleContentGov {
+  position: relative;
+  top: 208px;
+  color: black;
+  font-weight: 633;
+  font-size: 22px;
+}
+
+.ipfsLink {
+  font-weight: 435;
+}
+
+#OTPButton {
+  position: relative;
+  top: 280px;
+  height: 45px;
+  width: 139px;
+  font-size: 22px;
+}
+
+#verifyText {
+  position: relative;
+  width: 304px;
+  height: 121px;
+  left: 26px;
+  top: 40px;
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 57px;
+  color: #3D3939;
+  margin: auto;
+}
+
+#smallText {
+  position: relative;
+width: 514px;
+height: 36px;
+left: 26px;
+top: 52px;
+font-family: 'Outfit';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 16px;
+color: #575555;
+margin: auto;
+}
+
+.verifyBox {
+  box-sizing: border-box;
+position: relative;
+width: 59px;
+height: 59px;
+left: 83px;
+top: 27px;
+background: #FBFBFB;
+border: 0.5px solid #14224A;
+border-radius: 8px;
+margin: 10px;
+}
+
+#box1 {
+  width: 1246px;
+height: 550px;
+color: white;
+background-color: whitesmoke;
+margin: auto;
+display: block;
+top: 200px;
+position: relative;
+border-radius: 33px;
+}
+
+.boxes {
+  width: 640px;
+height: 130px;
+top: 65px;
+position: relative;
+margin: auto;
+display: flex;
+left: 28px;
+}
+
+.form-control {
+  margin-bottom: 16px;
+  height: 45px;
 }
